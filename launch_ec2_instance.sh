@@ -57,4 +57,3 @@ done
 echo ""
 
 
-ssh -i $ssh_key ubuntu@$elastic_ip
