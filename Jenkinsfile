@@ -3,12 +3,7 @@ pipeline {
     stages {  
          stage('Launch instance') {                
                 steps {
-                      sshagent(['devops-ec2']) {
-                        sh 'scp -o StrictHostKeyChecking=no $WORKSPACE/install_docker.sh ubuntu@3.87.217.109:/home/ubuntu/'
-                        sh 'scp $WORKSPACE/install_docker_nginx.sh ubuntu@3.87.217.109:/home/ubuntu/'
-                        sh 'ssh ubuntu@3.87.217.109 sudo chmod +x install_docker.sh'
-                        sh 'ssh ubuntu@3.87.217.109 sudo chmod +x install_docker_nginx.sh'
-                    }
+                      sh './launch_ec2_instance.sh'
                 }
             }
             stage('Copy required Scripts') {                
