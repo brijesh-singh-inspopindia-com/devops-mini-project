@@ -1,9 +1,12 @@
+@Library('github.com/releaseworks/jenkinslib') _
 pipeline {
     agent any
     stages {  
          stage('Launch instance') {                
                 steps {                     
-                      sh './launch_ec2_instance.sh'
+                      withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'aws-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                            AWS("aws ec2 run-instances --image-id $aws_image_id --count 1 --region us-east-1 --instance-type $i_type --key-name $aws_key_name --security-group-ids $sec_id --subnet-id $sub_id --associate-public-ip-address  --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$tag - $uid},{Key=WatchTower,Value=$tag},{Key=AutomatedID,Value=$uid}]" | grep InstanceId ")
+                        }
                 }
             }
             stage('Copy required Scripts') {                
