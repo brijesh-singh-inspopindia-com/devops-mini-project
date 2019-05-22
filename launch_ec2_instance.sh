@@ -12,14 +12,13 @@ tag="devops-demo-instance"
 aws_key_name="devops-key"
 ssh_key="devops-key.pem"
 uid=$RANDOM
-
-allocationid_ec2= "eipalloc-0c65e06315f674baa"
+allocationid_ec2="eipalloc-0c65e06315f674baa"
 
 echo "Creating EC2 instance in AWS"
 
 ec2_id=$(aws ec2 run-instances --image-id $aws_image_id --count 1 --region us-east-1 --instance-type $i_type --key-name $aws_key_name --security-group-ids $sec_id --subnet-id $sub_id --associate-public-ip-address  --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$tag - $uid},{Key=WatchTower,Value=$tag},{Key=AutomatedID,Value=$uid}]" | grep InstanceId | cut -d":" -f2 | cut -d'"' -f2)
 
-aws ec2 associate-address --instance-id $ec2_id --allocation-id $allocationid_ec2
+associationid_ret=$(aws ec2 associate-address --instance-id $ec2_id --allocation-id $allocationid_ec2 | grep AssociationId)
 
 echo -e "\t\033[0;31mEC2 Instance ID: $ec2_id\033[0m"
 
