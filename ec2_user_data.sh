@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd ~/.ssh/
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC9NpxOVr7NkXURCms6mSqnlgJS4KZDXXGZNq8F+e5R6z2k9YniCmNIQ4GmcrW1lI9t1gY/bC5n0WcD46aZB272RwhRpAAKd/gaLAA3RrASOKeA4Y2aw+Zlvu8eeQEavM+6mQkDYPzrKGYlSneIlzot9DLI40Ud2La9d1It+WeT7zW6rMcFrG3yOb14IqeaO9gvokMkdDs1ws3z/virNKLiJL8FwnUBU1CM3956bmSYOLa5c8TQMt/3EttZfS+ketQ8ZhpTD1iUjL2avfS7QNkOqHvkfHoioct7vuaBxeOWaYFc19+ST0xebKjxV46I8PSdo5EYQese89AzkD/jrHs5 jenkins@ip-10-0-1-108" >> authorized_keys
