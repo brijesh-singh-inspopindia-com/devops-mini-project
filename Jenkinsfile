@@ -1,9 +1,19 @@
 pipeline {
     agent any
-    stages {        
+    stages {  
+         stage('Launch instance') {                
+                steps {
+                      sshagent(['devops-ec2']) {
+                        sh 'scp -o StrictHostKeyChecking=no $WORKSPACE/install_docker.sh ubuntu@3.87.217.109:/home/ubuntu/'
+                        sh 'scp $WORKSPACE/install_docker_nginx.sh ubuntu@3.87.217.109:/home/ubuntu/'
+                        sh 'ssh ubuntu@3.87.217.109 sudo chmod +x install_docker.sh'
+                        sh 'ssh ubuntu@3.87.217.109 sudo chmod +x install_docker_nginx.sh'
+                    }
+                }
+            }
             stage('Copy required Scripts') {                
                 steps {
-                      sshagent(['build-server']) {
+                      sshagent(['devops-ec2']) {
                         sh 'scp -o StrictHostKeyChecking=no $WORKSPACE/install_docker.sh ubuntu@3.87.217.109:/home/ubuntu/'
                         sh 'scp $WORKSPACE/install_docker_nginx.sh ubuntu@3.87.217.109:/home/ubuntu/'
                         sh 'ssh ubuntu@3.87.217.109 sudo chmod +x install_docker.sh'
@@ -13,7 +23,7 @@ pipeline {
             }
             stage('Installed Docker & Nginx') {            
                 steps {
-                    sshagent(['build-server']) {
+                    sshagent(['devops-ec2']) {
                         sh 'ssh ubuntu@3.87.217.109 ./install_docker.sh'
                         sh 'ssh ubuntu@3.87.217.109 ./install_docker_nginx.sh'
                     }
@@ -21,7 +31,7 @@ pipeline {
             }
             stage('Deploy Build') {            
                 steps {
-                    sshagent(['build-server']) {
+                    sshagent(['devops-ec2']) {
                         sh 'scp $WORKSPACE/myapp/* ubuntu@3.87.217.109:/home/ubuntu/myapp/'
                    }
                 }
