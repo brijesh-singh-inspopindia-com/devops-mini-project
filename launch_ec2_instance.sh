@@ -23,7 +23,8 @@ uid=$RANDOM
 
 echo "Creating EC2 instance in AWS"
 
-ec2_id=$(aws ec2 run-instances --image-id $aws_image_id --count 1 --region us-east-1 --instance-type $i_type --key-name $aws_key_name --security-group-ids $sec_id --subnet-id $sub_id --associate-public-ip-address 3.212.118.113 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$tag - $uid},{Key=WatchTower,Value=$tag},{Key=AutomatedID,Value=$uid}]" | grep InstanceId | cut -d":" -f2 | cut -d'"' -f2)
+ec2_id=$(aws ec2 run-instances --image-id $aws_image_id --count 1 --region us-east-1 --instance-type $i_type --key-name $aws_key_name --security-group-ids $sec_id --subnet-id $sub_id --associate-public-ip-address  --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$tag - $uid},{Key=WatchTower,Value=$tag},{Key=AutomatedID,Value=$uid}]" | grep InstanceId | cut -d":" -f2 | cut -d'"' -f2)
+aws ec2 associate-address --instance-id $ec2_id --allocation-id eipalloc-087ddda4fc181052a
 
 # Log date, time, random ID. This may come handy in the future for troubleshooting
 date >> logs.txt
