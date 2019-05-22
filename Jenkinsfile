@@ -2,9 +2,7 @@ pipeline {
     agent any
     stages {  
          stage('Launch instance') {                
-                steps {
-                      sh './install_aws_cli.sh'
-                      sh './configure_aws_cli.sh'
+                steps {                     
                       sh './launch_ec2_instance.sh'
                 }
             }
