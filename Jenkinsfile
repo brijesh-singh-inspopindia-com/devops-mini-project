@@ -5,7 +5,7 @@ pipeline {
          stage('Launch instance') {                
                 steps {                     
                       withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'aws-key', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY']]) {
-                            AWS("aws ec2 run-instances --image-id $aws_image_id --count 1 --region us-east-1 --instance-type $i_type --key-name $aws_key_name --security-group-ids $sec_id --subnet-id $sub_id --associate-public-ip-address  --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$tag - $uid},{Key=WatchTower,Value=$tag},{Key=AutomatedID,Value=$uid}]" | grep InstanceId ")
+                            AWS("aws ec2 run-instances --image-id ami-0a313d6098716f372 --count 1 --region us-east-1 --instance-type t2.micro --key-name devops-key --security-group-ids sg-0a0a7ff9c6298d97d --subnet-id subnet-095879cc20ee6471b --associate-public-ip-address  --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=devops-demo-instance}]" | grep InstanceId")
                         }
                 }
             }
