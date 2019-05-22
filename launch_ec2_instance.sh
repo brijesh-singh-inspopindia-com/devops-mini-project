@@ -13,7 +13,7 @@ aws_key_name="devops-key"
 ssh_key="devops-key.pem"
 uid=$RANDOM
 
-allocationid_ec2= $(aws ec2 allocate-address --domain vpc | grep AllocationId)
+allocationid_ec2= "eipalloc-0c65e06315f674baa"
 
 echo "Creating EC2 instance in AWS"
 
