@@ -44,6 +44,9 @@ echo whoami
 
 elastic_ip=$(aws ec2 describe-instances --instance-ids $ec2_id --query 'Reservations[0].Instances[0].PublicIpAddress' | cut -d'"' -f2)
 sudo su jenkins
+echo $elastic_ip > elastic_ip.txt
+sudo cat  elastic_ip.txt
+pwd
 cd ~/.ssh/
 #pwd
 #echo "sudo cat /var/lib/jenkins/.ssh/id_rsa.pub | sudo ssh  -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/devops-key.pem ubuntu@${elastic_ip} 'cat >> ~/.ssh/authorized_keys'"
