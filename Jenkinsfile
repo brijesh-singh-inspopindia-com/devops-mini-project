@@ -6,12 +6,12 @@ pipeline {
        elastic_ip = sh(script: 'sudo cat /var/lib/jenkins/workspace/launch-job/elastic_ip.txt', , returnStdout: true).trim()
    }
     stages {  
-         stage('Copy required Scripts') {                  
-                steps {
-                    sh 'sudo chmod +x launch_ec2_instance.sh'
-                    sh './launch_ec2_instance.sh'                    
-                }
-         }
+             stage('Lunch Ec2') {                  
+                    steps {
+                        sh 'sudo chmod +x launch_ec2_instance.sh'
+                        sh './launch_ec2_instance.sh'                    
+                    }
+             }
          
             stage('Copy required Scripts') {                  
                 steps {
