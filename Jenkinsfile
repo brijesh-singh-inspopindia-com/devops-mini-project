@@ -1,9 +1,6 @@
 def elastic_ip
 pipeline {
-    agent any
-    environment {
-       elastic_ip = sh(script: 'sudo cat $WORKSPACE/elastic_ip.txt', , returnStdout: true).trim()
-   }
+    agent any    
     stages {  
              stage('Lunch Ec2') {                  
                     steps {
@@ -12,7 +9,10 @@ pipeline {
                     }
              }
          
-            stage('Copy required Scripts') {                  
+            stage('Copy required Scripts') { 
+                environment {
+                   elastic_ip = sh(script: 'sudo cat $WORKSPACE/elastic_ip.txt', , returnStdout: true).trim()
+               }
                 steps {                        
                         sh 'echo ${elastic_ip}'                        
                         sh 'scp -o StrictHostKeyChecking=no $WORKSPACE/install_docker.sh ubuntu@${elastic_ip}:/home/ubuntu/'
@@ -22,7 +22,8 @@ pipeline {
                    
                 }
             }
-            stage('Installed Docker & Nginx') {            
+            stage('Installed Docker & Nginx') { 
+                
                 steps {
                    
                         sh 'ssh ubuntu@${elastic_ip} ./install_docker.sh'
@@ -30,7 +31,8 @@ pipeline {
                     
                 }
             }
-            stage('Deploy Build') {            
+            stage('Deploy Build') { 
+                 
                 steps {
                     
                         sh 'scp $WORKSPACE/myapp/* ubuntu@${elastic_ip}:/home/ubuntu/myapp/'
