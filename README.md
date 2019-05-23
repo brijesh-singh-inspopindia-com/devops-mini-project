@@ -104,52 +104,72 @@ sudo chmod +x install_aws_cli.sh
 - Now we will create a jenkins pipeline file in github project named "Jenkinsfile"
 ```
     def elastic_ip
-    pipeline {
-        agent any
-        environment {
-           elastic_ip = sh(script: 'sudo cat $WORKSPACE/elastic_ip.txt', , returnStdout: true).trim()
-       }
-        stages {  
-                 stage('Lunch Ec2') {                  
-                        steps {
-                            sh 'sudo chmod +x launch_ec2_instance.sh'
-                            sh './launch_ec2_instance.sh'                    
-                        }
-                 }
-             
-                stage('Copy required Scripts') {                  
-                    steps {                        
-                            sh 'echo ${elastic_ip}'                        
-                            sh 'scp -o StrictHostKeyChecking=no $WORKSPACE/install_docker.sh ubuntu@${elastic_ip}:/home/ubuntu/'
-                            sh 'scp $WORKSPACE/install_docker_nginx.sh ubuntu@${elastic_ip}:/home/ubuntu/'
-                            sh 'ssh ubuntu@${elastic_ip} sudo chmod +x install_docker.sh'
-                            sh 'ssh ubuntu@${elastic_ip} sudo chmod +x install_docker_nginx.sh'
-                    }
-                }
-                stage('Installed Docker & Nginx') {            
+pipeline {
+    agent any    
+    stages {  
+             stage('Lunch Ec2') {                  
                     steps {
-                            sh 'ssh ubuntu@${elastic_ip} ./install_docker.sh'
-                            sh 'ssh ubuntu@${elastic_ip} ./install_docker_nginx.sh'
+                        sh 'sudo chmod +x launch_ec2_instance.sh'
+                        sh './launch_ec2_instance.sh'                    
                     }
+             }
+         
+            stage('Copy required Scripts') { 
+                environment {
+                   elastic_ip = sh(script: 'sudo cat $WORKSPACE/elastic_ip.txt', , returnStdout: true).trim()
+               }
+                steps {                        
+                        sh 'echo ${elastic_ip}'                        
+                        sh 'scp -o StrictHostKeyChecking=no $WORKSPACE/install_docker.sh ubuntu@${elastic_ip}:/home/ubuntu/'
+                        sh 'scp $WORKSPACE/install_docker_nginx.sh ubuntu@${elastic_ip}:/home/ubuntu/'
+                        sh 'ssh ubuntu@${elastic_ip} sudo chmod +x install_docker.sh'
+                        sh 'ssh ubuntu@${elastic_ip} sudo chmod +x install_docker_nginx.sh'
+                   
                 }
-                stage('Deploy Build') {            
-                    steps {
-                            sh 'scp $WORKSPACE/myapp/* ubuntu@${elastic_ip}:/home/ubuntu/myapp/'
+            }
+            stage('Installed Docker & Nginx') { 
+                environment {
+                   elastic_ip = sh(script: 'sudo cat $WORKSPACE/elastic_ip.txt', , returnStdout: true).trim()
+               }
+                steps {
+                   
+                        sh 'ssh ubuntu@${elastic_ip} ./install_docker.sh'
+                        sh 'ssh ubuntu@${elastic_ip} ./install_docker_nginx.sh'
+                    
+                }
+            }
+            stage('Deploy Build') { 
+                 environment {
+                   elastic_ip = sh(script: 'sudo cat $WORKSPACE/elastic_ip.txt', , returnStdout: true).trim()
+               }
+                steps {
+                    
+                        sh 'scp $WORKSPACE/myapp/* ubuntu@${elastic_ip}:/home/ubuntu/myapp/'
+                   
+                }
+            } 
+           
+                stage('Check Availability') {
+                    environment {
+                           elastic_ip = sh(script: 'sudo cat $WORKSPACE/elastic_ip.txt', , returnStdout: true).trim()
+                       }
+                  steps {                         
+                          sh 'curl -s --head  --request GET  http://${elastic_ip} | grep "200"'                          
+                              
+                       
                     }
-                } 
-                    stage('Check Availability') {
-                      steps {                         
-                              sh 'curl -s --head  --request GET  http://${elastic_ip} | grep "200"'  
-                        }
-                    }
-        }
+                }         
+        
+
     }
+}
+
 ```
 - Its final time to create a jenkins job for creating an ec2 instance with a webserver on which we will deploy our index.html file
-- create a new job named "devops-demo-job" as pipeling project
+- create a new job named "devops-aws-demo" as pipeling project
 - set buid Pipeline as pipeline scritp as scm 
 - give github url and jenkins file 
-- now we can save and run the job "devops-demo-job"
+- now we can save and run the job "devops-aws-demo"
 - it will launch a new ec2 machine and deploy build also on nginx server (docker container)
 - we will have to copy & save somewhere instance-id from console output of this job and use it for termination of created instance later after checking
 - Create a another job named "terminate-ec2-job" as a freestyle project and use paramterized build with instance_id as a paramter which will be use to delete created instance from 1st job.
