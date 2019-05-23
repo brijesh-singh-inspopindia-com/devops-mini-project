@@ -1,9 +1,8 @@
 def elastic_ip
-def GIT_COMMIT_EMAIL
 pipeline {
     agent any
     environment {
-       elastic_ip = sh(script: 'sudo cat /var/lib/jenkins/workspace/launch-job/elastic_ip.txt', , returnStdout: true).trim()
+       elastic_ip = sh(script: 'sudo cat $WORKSPACE/elastic_ip.txt', , returnStdout: true).trim()
    }
     stages {  
              stage('Lunch Ec2') {                  
@@ -14,10 +13,8 @@ pipeline {
              }
          
             stage('Copy required Scripts') {                  
-                steps {
-                        sh 'echo helloworld1'
-                        sh 'echo ${elastic_ip}'
-                        sh 'echo helloworld2'
+                steps {                        
+                        sh 'echo ${elastic_ip}'                        
                         sh 'scp -o StrictHostKeyChecking=no $WORKSPACE/install_docker.sh ubuntu@${elastic_ip}:/home/ubuntu/'
                         sh 'scp $WORKSPACE/install_docker_nginx.sh ubuntu@${elastic_ip}:/home/ubuntu/'
                         sh 'ssh ubuntu@${elastic_ip} sudo chmod +x install_docker.sh'
