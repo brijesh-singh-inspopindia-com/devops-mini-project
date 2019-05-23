@@ -41,6 +41,7 @@ do
     ((temp_cnt--))
 done
 echo ""
+elastic_ip=$(aws ec2 describe-instances --instance-ids $ec2_id --query 'Reservations[0].Instances[0].PublicIpAddress' | cut -d'"' -f2)
 cd ~/.ssh/
 sudo cat /var/lib/jenkins/.ssh/id_rsa.pub | ssh -i devops-key.pem ubuntu@$elastic_ip 'cat >> ~/.ssh/authorized_keys'
 
