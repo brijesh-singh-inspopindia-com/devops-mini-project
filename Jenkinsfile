@@ -1,4 +1,4 @@
-elastic_ip=$(cat $WORKSPACE/elastic_ip.txt)
+elastic_ip=$(cat ${WORKSPACE}/elastic_ip.txt)
 pipeline {
     agent any
     stages {  
