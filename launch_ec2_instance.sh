@@ -26,7 +26,7 @@ elastic_ip=$(aws ec2 describe-instances --instance-ids $ec2_id --query 'Reservat
 echo -e "\t \033[0;31mElastic IP: $elastic_ip\033[0m"
 
 echo ""
-countdown_timer=180
+countdown_timer=120
 echo -e "\e[32m Please wait while your instance is being powered on..We are trying to ssh into the EC2 instance\033[0m"
 echo -e "\e[32m Copy/paste the below command to acess your EC2 instance via SSH from this machine. You may need this later.\033[0m"
 echo ""
