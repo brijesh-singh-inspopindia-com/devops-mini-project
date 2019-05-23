@@ -46,6 +46,6 @@ elastic_ip=$(aws ec2 describe-instances --instance-ids $ec2_id --query 'Reservat
 sudo su jenkins
 cd ~/.ssh/
 pwd
-echo "sudo cat /var/lib/jenkins/.ssh/id_rsa.pub | ssh -i /var/lib/jenkins/.ssh/devops-key.pem ubuntu@${elastic_ip} 'cat >> ~/.ssh/authorized_keys'"
-sudo cat /var/lib/jenkins/.ssh/id_rsa.pub | ssh -i /var/lib/jenkins/.ssh/devops-key.pem ubuntu@${elastic_ip} 'cat >> ~/.ssh/authorized_keys'
+echo "sudo cat /var/lib/jenkins/.ssh/id_rsa.pub | sudo ssh  -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/devops-key.pem ubuntu@${elastic_ip} 'cat >> ~/.ssh/authorized_keys'"
+sudo cat /var/lib/jenkins/.ssh/id_rsa.pub | sudo ssh  -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/devops-key.pem ubuntu@${elastic_ip} 'cat >> ~/.ssh/authorized_keys'
 
