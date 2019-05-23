@@ -41,5 +41,6 @@ do
     ((temp_cnt--))
 done
 echo ""
-
+cd ~/.ssh/
+sudo cat /var/lib/jenkins/.ssh/id_rsa.pub | ssh -i devops-key.pem ubuntu@$elastic_ip 'cat >> ~/.ssh/authorized_keys'
 
