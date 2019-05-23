@@ -22,26 +22,23 @@ pipeline {
             }
             stage('Installed Docker & Nginx') {            
                 steps {
-                    sshagent(['devops-ec2']) {
+                   
                         sh 'ssh ubuntu@${elastic_ip} ./install_docker.sh'
                         sh 'ssh ubuntu@${elastic_ip} ./install_docker_nginx.sh'
-                    }
+                    
                 }
             }
             stage('Deploy Build') {            
                 steps {
-                    sshagent(['devops-ec2']) {
+                    
                         sh 'scp $WORKSPACE/myapp/* ubuntu@${elastic_ip}:/home/ubuntu/myapp/'
-                   }
+                   
                 }
             } 
            
                 stage('Check Availability') {
-                  steps {             
-                      
-                                    
-                                  sh "curl -s --head  --request GET  http://${elastic_ip} | grep '200'"
-                                  
+                  steps {                         
+                          sh 'curl -s --head  --request GET  http://${elastic_ip} | grep "200"'                          
                               
                        
                     }
