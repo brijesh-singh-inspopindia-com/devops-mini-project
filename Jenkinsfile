@@ -7,8 +7,9 @@ pipeline {
                 steps {
                         sh 'sudo chmod 777 /var/lib/jenkins/workspace/launch-job/elastic_ip.txt'
                         sh 'elastic_ip=sudo cat /var/lib/jenkins/workspace/launch-job/elastic_ip.txt'
-                        sh 'echo "Hello - ${elastic_ip}"'
-                        sh 'echo helloworld'
+                        sh 'echo helloworld1'
+                        sh 'echo ${elastic_ip}'
+                        sh 'echo helloworld2'
                         sh 'scp -o StrictHostKeyChecking=no $WORKSPACE/install_docker.sh ubuntu@${elastic_ip}:/home/ubuntu/'
                         sh 'scp $WORKSPACE/install_docker_nginx.sh ubuntu@${elastic_ip}:/home/ubuntu/'
                         sh 'ssh ubuntu@${elastic_ip} sudo chmod +x install_docker.sh'
