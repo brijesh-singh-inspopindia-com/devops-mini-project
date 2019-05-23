@@ -1,6 +1,6 @@
 ## devops-mini-project
 # Credential to access jenkins 
-# Jenkins URL for accessing jobs: http://3.216.48.235:8080   Username: devops    Password: devops
+# Jenkins URL for accessing jobs: http://3.216.48.235:8080   Username: "devops"    Password: "devops"
 # Porject plan:
 - we will create a ec2 ubuntu machine from aws console to install jenkins on that machine
 - for this setup, we can create a custom VPC with public subnet,internet gateway attached to VPC,route table update for VPC and subnet for internet gateway
