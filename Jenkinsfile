@@ -5,7 +5,7 @@ pipeline {
          
             stage('Copy required Scripts') {                
                 steps {
-                     
+                        sh 'sudo chmod 777 /var/lib/jenkins/workspace/launch-job/elastic_ip.txt'
                         sh 'elastic_ip=cat /var/lib/jenkins/workspace/launch-job/elastic_ip.txt'
                         sh 'echo "hello " $elastic_ip'
                         sh 'scp -o StrictHostKeyChecking=no $WORKSPACE/install_docker.sh ubuntu@${elastic_ip}:/home/ubuntu/'
