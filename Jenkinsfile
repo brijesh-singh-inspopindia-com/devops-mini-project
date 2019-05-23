@@ -6,7 +6,13 @@ pipeline {
             stage('Copy required Scripts') {                
                 steps {
                         sh 'sudo chmod 777 /var/lib/jenkins/workspace/launch-job/elastic_ip.txt'
-                        sh 'elastic_ip=sudo cat /var/lib/jenkins/workspace/launch-job/elastic_ip.txt'
+                        elastic_ip=sh 'sudo cat /var/lib/jenkins/workspace/launch-job/elastic_ip.txt'
+                        GIT_COMMIT_EMAIL = sh (
+                            script: 'sudo cat /var/lib/jenkins/workspace/launch-job/elastic_ip.txt',
+                            returnStdout: true
+                        ).trim()
+                        echo "Git committer email: ${GIT_COMMIT_EMAIL}"
+                    
                         sh 'echo helloworld1'
                         sh 'echo ${elastic_ip}'
                         sh 'echo helloworld2'
