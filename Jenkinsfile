@@ -6,7 +6,7 @@ pipeline {
             stage('Copy required Scripts') {                
                 steps {
                       sshagent(['devops-ec2']) {
-                          elastic_ip=$(cat /var/lib/jenkins/workspace/devops-demo-job/elastic_ip.txt)
+                          elastic_ip=sh 'cat /var/lib/jenkins/workspace/devops-demo-job/elastic_ip.txt'
                           sh 'scp -o StrictHostKeyChecking=no $WORKSPACE/install_docker.sh ubuntu@${elastic_ip}:/home/ubuntu/'
                         sh 'scp $WORKSPACE/install_docker_nginx.sh ubuntu@${elastic_ip}:/home/ubuntu/'
                         sh 'ssh ubuntu@${elastic_ip} sudo chmod +x install_docker.sh'
