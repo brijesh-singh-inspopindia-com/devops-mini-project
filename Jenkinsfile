@@ -1,4 +1,4 @@
-elastic_ip=$(cat ${WORKSPACE}/elastic_ip.txt)
+elastic_ip=$(cat /var/lib/jenkins/workspace/devops-demo-job/elastic_ip.txt)
 pipeline {
     agent any
     stages {  
