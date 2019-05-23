@@ -2,17 +2,19 @@ def elastic_ip
 def GIT_COMMIT_EMAIL
 pipeline {
     agent any
+    environment {
+       elastic_ip = '10.0.0.0'
+   }
     stages {  
          
-            stage('Copy required Scripts') {                
+            stage('Copy required Scripts') {  
+                environment {
+                       elastic_ip = sh(script: 'sudo cat /var/lib/jenkins/workspace/launch-job/elastic_ip.txt', , returnStdout: true).trim()
+                   }
                 steps {
-                        sh 'sudo chmod 777 /var/lib/jenkins/workspace/launch-job/elastic_ip.txt'
-                        elastic_ip=sh 'sudo cat /var/lib/jenkins/workspace/launch-job/elastic_ip.txt'
-                        GIT_COMMIT_EMAIL = sh (
-                            script: 'sudo cat /var/lib/jenkins/workspace/launch-job/elastic_ip.txt',
-                            returnStdout: true
-                        ).trim()
-                        echo "Git committer email: ${GIT_COMMIT_EMAIL}"
+                                                
+                        
+                        echo "Git committer email: ${elastic_ip}"
                     
                         sh 'echo helloworld1'
                         sh 'echo ${elastic_ip}'
