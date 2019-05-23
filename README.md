@@ -1,5 +1,6 @@
 ## devops-mini-project
-
+# Credential to access jenkins 
+# Jenkins URL for accessing jobs: http://3.216.48.235:8080   Username: devops    Password: devops
 # Porject plan:
 - we will create a ec2 ubuntu machine from aws console to install jenkins on that machine
 - for this setup, we can create a custom VPC with public subnet,internet gateway attached to VPC,route table update for VPC and subnet for internet gateway
@@ -174,5 +175,4 @@ pipeline {
 - we will have to copy & save somewhere instance-id from console output of this job and use it for termination of created instance later after checking
 - Create a another job named "terminate-ec2-job" as a freestyle project and use paramterized build with instance_id as a paramter which will be use to delete created instance from 1st job.
 
-# Jenkins URL for accessing jobs:
-http://3.216.48.235:8080
+
