@@ -23,7 +23,9 @@ pipeline {
                 }
             }
             stage('Installed Docker & Nginx') { 
-                
+                environment {
+                   elastic_ip = sh(script: 'sudo cat $WORKSPACE/elastic_ip.txt', , returnStdout: true).trim()
+               }
                 steps {
                    
                         sh 'ssh ubuntu@${elastic_ip} ./install_docker.sh'
@@ -32,7 +34,9 @@ pipeline {
                 }
             }
             stage('Deploy Build') { 
-                 
+                 environment {
+                   elastic_ip = sh(script: 'sudo cat $WORKSPACE/elastic_ip.txt', , returnStdout: true).trim()
+               }
                 steps {
                     
                         sh 'scp $WORKSPACE/myapp/* ubuntu@${elastic_ip}:/home/ubuntu/myapp/'
@@ -41,6 +45,9 @@ pipeline {
             } 
            
                 stage('Check Availability') {
+                    environment {
+                           elastic_ip = sh(script: 'sudo cat $WORKSPACE/elastic_ip.txt', , returnStdout: true).trim()
+                       }
                   steps {                         
                           sh 'curl -s --head  --request GET  http://${elastic_ip} | grep "200"'                          
                               
