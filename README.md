@@ -173,3 +173,6 @@ pipeline {
 - it will launch a new ec2 machine and deploy build also on nginx server (docker container)
 - we will have to copy & save somewhere instance-id from console output of this job and use it for termination of created instance later after checking
 - Create a another job named "terminate-ec2-job" as a freestyle project and use paramterized build with instance_id as a paramter which will be use to delete created instance from 1st job.
+
+# Jenkins URL for accessing jobs:
+http://3.216.48.235:8080
