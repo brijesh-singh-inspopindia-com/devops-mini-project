@@ -45,7 +45,17 @@ echo whoami
 elastic_ip=$(aws ec2 describe-instances --instance-ids $ec2_id --query 'Reservations[0].Instances[0].PublicIpAddress' | cut -d'"' -f2)
 sudo su jenkins
 cd ~/.ssh/
-pwd
-echo "sudo cat /var/lib/jenkins/.ssh/id_rsa.pub | sudo ssh  -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/devops-key.pem ubuntu@${elastic_ip} 'cat >> ~/.ssh/authorized_keys'"
+#pwd
+#echo "sudo cat /var/lib/jenkins/.ssh/id_rsa.pub | sudo ssh  -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/devops-key.pem ubuntu@${elastic_ip} 'cat >> ~/.ssh/authorized_keys'"
 sudo cat /var/lib/jenkins/.ssh/id_rsa.pub | sudo ssh  -o StrictHostKeyChecking=no -i /var/lib/jenkins/.ssh/devops-key.pem ubuntu@${elastic_ip} 'cat >> ~/.ssh/authorized_keys'
 
+scp -o StrictHostKeyChecking=no $WORKSPACE/install_docker.sh ubuntu@${elastic_ip}:/home/ubuntu/
+
+scp $WORKSPACE/install_docker_nginx.sh ubuntu@${elastic_ip}:/home/ubuntu/
+ssh ubuntu@${elastic_ip} sudo chmod +x install_docker.sh
+ssh ubuntu@${elastic_ip} sudo chmod +x install_docker_nginx.sh
+
+ssh ubuntu@${elastic_ip} ./install_docker.sh
+ssh ubuntu@${elastic_ip} ./install_docker_nginx.sh
+
+scp $WORKSPACE/myapp/* ubuntu@${elastic_ip}:/home/ubuntu/myapp/
